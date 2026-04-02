@@ -13,7 +13,7 @@ global $query_string;
 wp_reset_query();
 
 if ( '' == get_option( 'permalink_structure' ) ) {
-	$dr_author_name = $_REQUEST['dr_author'];
+	$dr_author_name = sanitize_text_field( wp_unslash( $_REQUEST['dr_author'] ) );
 } else {
 	$dr_author_name = get_query_var( 'author_name' );
 }

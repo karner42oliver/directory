@@ -8,7 +8,8 @@ jQuery(function($) {
 			// set data
 			var data = {
 				action: 'dr_get_caps',
-				role: $('#roles').val()
+				role: $('#roles').val(),
+				nonce: (typeof drAdmin !== 'undefined') ? drAdmin.nonce : ''
 			};
 			// make the post request and process the response
 			$.post(ajaxurl, data)

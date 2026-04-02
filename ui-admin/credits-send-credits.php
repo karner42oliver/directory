@@ -1,9 +1,9 @@
 <?php if (!defined('ABSPATH')) die('Kein direkter Zugriff erlaubt!'); ?>
 
 <?php
-$send_to = ( empty($_POST['manage_credits'])) ? '' : $_POST['manage_credits'];
-$send_to_user = ( empty($_POST['manage_credits_user'])) ? '' : $_POST['manage_credits_user'];
-$send_to_count = ( empty($_POST['manage_credits_count'])) ? '' : $_POST['manage_credits_count'];
+$send_to = ( empty($_POST['manage_credits'])) ? '' : sanitize_text_field( wp_unslash( $_POST['manage_credits'] ) );
+$send_to_user = ( empty($_POST['manage_credits_user'])) ? '' : sanitize_text_field( wp_unslash( $_POST['manage_credits_user'] ) );
+$send_to_count = ( empty($_POST['manage_credits_count'])) ? '' : absint( $_POST['manage_credits_count'] );
 ?>
 
 <div class="wrap">

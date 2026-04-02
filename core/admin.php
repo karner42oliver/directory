@@ -228,6 +228,9 @@ class Directory_Core_Admin extends Directory_Core {
 		}
 
 		wp_enqueue_script( 'dr-admin-scripts', $this->plugin_url . 'ui-admin/js/ui-scripts.js', array( 'jquery' ) );
+		wp_localize_script( 'dr-admin-scripts', 'drAdmin', array(
+			'nonce' => wp_create_nonce( 'dr_admin_caps' ),
+		) );
 	}
 
 	/**
@@ -404,12 +407,13 @@ class Directory_Core_Admin extends Directory_Core {
 	* @return JSON Encoded string
 	*/
 	function ajax_get_caps() {
-		if ( !current_user_can( 'manage_options' ) ) die(-1);
-		if(empty($_POST['role'])) die(-1);
+		if ( ! current_user_can( 'manage_options' ) ) die(-1);
+		check_ajax_referer( 'dr_admin_caps', 'nonce' );
+		if ( empty( $_POST['role'] ) ) die(-1);
 
 		global $wp_roles;
 
-		$role = $_POST['role'];
+		$role = sanitize_text_field( wp_unslash( $_POST['role'] ) );
 
 		if ( !$wp_roles->is_role( $role ) )
 		die(-1);
@@ -440,10 +444,14 @@ class Directory_Core_Admin extends Directory_Core {
 		// add/remove capabilities
 		global $wp_roles;
 
-		$role = $_POST['roles'];
+		$role = sanitize_text_field( wp_unslash( $_POST['roles'] ?? '' ) );
+
+		if ( ! $wp_roles->is_role( $role ) ) die(-1);
 
 		$all_caps = array_keys( $this->capability_map );
-		$to_add = array_keys( (array)$_POST['capabilities'] );
+		$to_add = array_keys( (array) $_POST['capabilities'] );
+		// Whitelist: only allow known capability keys
+		$to_add = array_intersect( $to_add, $all_caps );
 		$to_remove = array_diff( $all_caps, $to_add );
 
 		foreach ( $to_remove as $capability ) {

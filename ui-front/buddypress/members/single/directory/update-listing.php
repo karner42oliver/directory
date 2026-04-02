@@ -30,7 +30,7 @@ if(! isset($_REQUEST['post_id']) ){
 
 //Or are we editing a listing?
 if( isset($_REQUEST['post_id']) ){
-	$listing_data = get_post(  $_REQUEST['post_id'], ARRAY_A );
+	$listing_data = get_post( absint( $_REQUEST['post_id'] ), ARRAY_A );
 	$post_ID = $listing_data['ID'];
 	$editing = true;
 }

@@ -145,11 +145,11 @@ class DR_Payments{
 			}
 
 			//AUTHORIZENET
-			if ($_SESSION['payment_method'] == 'cc'){
+			if (($_SESSION['payment_method'] ?? '') == 'cc'){
 				$transactions->authorizenet = $transaction_details;
 			}
 			//PAYPAL
-			elseif ($_SESSION['payment_method'] == 'paypal'){
+			elseif (($_SESSION['payment_method'] ?? '') == 'paypal'){
 				$transactions->paypal = $transaction_details;
 			}
 
@@ -179,11 +179,11 @@ class DR_Payments{
 		}
 
 		//AUTHORIZENET
-		if ($_SESSION['payment_method'] == 'cc'){
+		if (($_SESSION['payment_method'] ?? '') == 'cc'){
 			$transaction->authorizenet = $transaction_details;
 		}
 		//PAYPAL
-		elseif ($_SESSION['payment_method'] == 'paypal'){
+		elseif (($_SESSION['payment_method'] ?? '') == 'paypal'){
 			$transaction->paypal = $transaction_details;
 		}
 	}
@@ -302,11 +302,11 @@ class DR_Payments{
 
 				$_SESSION['payment_method'] = $_POST['payment_method']; //Save to session
 
-				if ( $_SESSION['payment_method'] == 'cc' ) {
+				if ( ($_SESSION['payment_method'] ?? '') == 'cc' ) {
 					// Set the proper step which will be loaded by "page-checkout.php"
 					set_query_var( 'checkout_step', 'cc_details' );
 				}
-				elseif ( $_SESSION['payment_method'] == 'paypal' ) {
+				elseif ( ($_SESSION['payment_method'] ?? '') == 'paypal' ) {
 
 					if ( 'recurring' == $_SESSION['billing_type'] ) {
 						set_query_var( 'checkout_step', 'recurring_payment' );
@@ -345,14 +345,14 @@ class DR_Payments{
 			unset($_POST['direct_payment_submit']);
 
 			//AUTHORIZE NET
-			if($_SESSION['payment_method'] == 'cc' && $this->use_authorizenet) {
+			if(($_SESSION['payment_method'] ?? '') == 'cc' && $this->use_authorizenet) {
 
 				$_SESSION['CC'] = $_POST;
 
 				set_query_var( 'checkout_step', 'confirm_payment' );
 			}
 			//PAYPAL
-			elseif($_SESSION['payment_method'] == 'paypal' && $this->use_paypal) {
+			elseif(($_SESSION['payment_method'] ?? '') == 'paypal' && $this->use_paypal) {
 
 				// Make API call
 				$result = $this->paypal_express_gateway->direct_payment(
@@ -435,7 +435,7 @@ class DR_Payments{
 
 
 			//AUTHORIZENET
-			if( $_SESSION['payment_method'] == 'cc' && $this->use_authorizenet) {
+			if( ($_SESSION['payment_method'] ?? '') == 'cc' && $this->use_authorizenet) {
 
 				//Invoice number contains the blog id as it's about the only thing that gets passed everywhere
 				$invoice_key = uniqid("LST-{$blog_id}-"); // LST is the prefix for Gateway Relay
@@ -603,7 +603,7 @@ class DR_Payments{
 				}
 			}
 			//PAYPAL
-			elseif( $_SESSION['payment_method'] == 'paypal' && $this->use_paypal) {
+			elseif( ($_SESSION['payment_method'] ?? '') == 'paypal' && $this->use_paypal) {
 
 				if( $_SESSION['billing_type'] == 'recurring' ) {
 
@@ -649,11 +649,11 @@ class DR_Payments{
 		elseif ( isset( $_POST['recurring_submit'] ) ) {
 
 			//AUTHORIZENET
-			if($_SESSION['payment_method'] == 'cc' && $this->use_authorizenet){
+			if(($_SESSION['payment_method'] ?? '') == 'cc' && $this->use_authorizenet){
 
 			}
 			//PAYPAL
-			elseif($_SESSION['payment_method'] == 'paypal') {
+			elseif(($_SESSION['payment_method'] ?? '') == 'paypal') {
 
 
 				$key = md5(

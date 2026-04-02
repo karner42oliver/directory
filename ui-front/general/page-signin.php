@@ -5,7 +5,7 @@ get_currentuserinfo();
 
 $register = (empty($_GET['register'])) ? '' : $_GET['register'];
 $reset = (empty($_GET['reset'])) ? '' : $_GET['reset'];
-$redirect = (empty($_GET['redirect_to'])) ? home_url() : $_GET['redirect_to'];
+$redirect = ( empty( $_GET['redirect_to'] ) ) ? home_url() : wp_validate_redirect( wp_unslash( $_GET['redirect_to'] ), home_url() );
 
 $options = $this->get_options('general');
 
